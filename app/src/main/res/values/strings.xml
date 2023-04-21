@@ -5,4 +5,7 @@
     <string name="title_pokemon_details">%s Pokemon</string>
 
     <string name="landing_title">Pokemon</string>
+    <string name="pokemon_name">Name: %s</string>
+    <string name="pokemon_height">Height: %sdm</string>
+    <string name="pokemon_weight">Weight: %sHG</string>
 </resources>

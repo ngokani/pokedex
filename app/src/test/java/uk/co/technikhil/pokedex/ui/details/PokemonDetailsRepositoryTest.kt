@@ -19,7 +19,7 @@ import uk.co.technikhil.pokedex.util.RxSchedulerExtension
 @ExtendWith(RxSchedulerExtension::class)
 class PokemonDetailsRepositoryTest {
 
-    private val mockPokemon = Pokemon(1, "test", 0, 1, 1)
+    private val mockPokemon = Pokemon(1, "test", 0, 1)
     private val mockPokeApi = mock<PokeApi> {
         on { getPokemon(any()) } doReturn Single.just(mockPokemon)
     }

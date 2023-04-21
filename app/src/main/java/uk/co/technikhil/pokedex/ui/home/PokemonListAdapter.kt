@@ -60,7 +60,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
 
         Glide
             .with(holder.itemView.context)
-            .load(Uri.parse(pokemonList[position].imageUrl))
+            .load(pokemonList[position].imageUrl)
             .placeholder(android.R.drawable.stat_sys_download)
             .into(holder.pokemonImage)
     }
