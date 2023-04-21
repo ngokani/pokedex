@@ -15,10 +15,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
 
     private val _state = MutableLiveData<PokemonListNetworkState>()
     val viewState: LiveData<PokemonListNetworkState> = _state
