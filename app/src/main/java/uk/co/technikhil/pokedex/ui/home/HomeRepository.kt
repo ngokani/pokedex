@@ -24,4 +24,8 @@ class HomeRepository @Inject constructor(
             Single.just(cacheList[offset]!!)
         }
     }
+
+    fun clear() {
+        cacheList.clear()
+    }
 }

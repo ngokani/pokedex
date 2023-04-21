@@ -36,16 +36,6 @@ class DashboardFragment : Fragment() {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.onScreenShown()
-    }
-
-    override fun onStop() {
-        viewModel.onStop()
-        super.onStop()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

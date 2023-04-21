@@ -46,6 +46,17 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = pokemonListAdapter
         }
+
+        viewModel.viewState.observe(viewLifecycleOwner, ::onViewStateChanged)
+        viewModel.onViewCreated()
+    }
+
+    private fun onViewStateChanged(state: PokemonListNetworkState) {
+        when (state) {
+            is PokemonListNetworkState.Success -> pokemonListAdapter.setPokemonResults(state.pokemonResult)
+            is PokemonListNetworkState.Failed -> {}
+            is PokemonListNetworkState.Loading -> {}
+        }
     }
 
     override fun onDestroyView() {
