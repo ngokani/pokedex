@@ -14,7 +14,4 @@ interface PokeApi {
 
     @GET("pokemon/{id}")
     fun getPokemon(@Path("id") id: Int): Single<Pokemon>
-
-    @GET("pokemon/{name}")
-    fun getPokemon(@Path("name") name: String): Single<Pokemon>
 }

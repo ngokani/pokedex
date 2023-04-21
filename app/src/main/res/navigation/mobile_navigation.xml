@@ -9,17 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="uk.co.technikhil.pokedex.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action android:id="@+id/action_navigate_to_details"
+            app:destination="@id/navigation_pokemon_details"/>
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="uk.co.technikhil.pokedex.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="uk.co.technikhil.pokedex.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_pokemon_details"
+        android:name="uk.co.technikhil.pokedex.ui.details.PokemonDetailsFragment"
+        android:label="@string/title_pokemon_details"
+        tools:layout="@layout/fragment_pokemon_details">
+        <argument android:name="pokemonId"
+            app:argType="integer"/>
+    </fragment>
 </navigation>
