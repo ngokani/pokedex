@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.technikhil.pokedex.databinding.FragmentHomeBinding
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pokemonListAdapter = PokemonListAdapter()
+        pokemonListAdapter.onItemClickedHandler = ::onItemClicked
         binding.pokeList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = pokemonListAdapter
@@ -42,6 +44,10 @@ class HomeFragment : Fragment() {
 
         viewModel.viewState.observe(viewLifecycleOwner, ::onViewStateChanged)
         viewModel.onViewCreated()
+    }
+
+    private fun onItemClicked(pokemonId: Int) {
+        findNavController().navigate(HomeFragmentDirections.actionNavigateToDetails(pokemonId))
     }
 
     private fun onViewStateChanged(state: PokemonListNetworkState) {

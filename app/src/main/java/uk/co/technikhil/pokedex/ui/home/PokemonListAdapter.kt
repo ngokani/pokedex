@@ -15,6 +15,8 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
 
     private var pokemonList = mutableListOf<PokemonResult>()
 
+    var onItemClickedHandler: ((Int) -> Unit)? = null
+
     fun setPokemonResults(results: List<PokemonResult>) {
 
         pokemonList = results.toMutableList()
@@ -63,9 +65,13 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
             .load(pokemonList[position].imageUrl)
             .placeholder(android.R.drawable.stat_sys_download)
             .into(holder.pokemonImage)
+
+        holder.itemView.setOnClickListener {
+            onItemClickedHandler?.invoke(pokemonList[position].id)
+        }
     }
 
-    class PokemonListItemViewHolder(private val viewPokemonItemBinding: ViewPokemonItemBinding) :
+    class PokemonListItemViewHolder(viewPokemonItemBinding: ViewPokemonItemBinding) :
         ViewHolder(viewPokemonItemBinding.root) {
 
         val pokemonName: TextView = viewPokemonItemBinding.pokemonName
