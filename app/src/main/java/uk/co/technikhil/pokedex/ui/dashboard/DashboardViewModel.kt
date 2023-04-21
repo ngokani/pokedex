@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import uk.co.technikhil.pokedex.domain.GetPokemonListUseCase
 import javax.inject.Inject
 
@@ -32,12 +31,12 @@ class DashboardViewModel @Inject constructor(
             getPokemonListUseCase()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                {
-                    _isSuccess.value = true
-                },
-                {
-                    _isFailure.value = true
-                })
+                    {
+                        _isSuccess.value = true
+                    },
+                    {
+                        _isFailure.value = true
+                    })
         )
     }
 

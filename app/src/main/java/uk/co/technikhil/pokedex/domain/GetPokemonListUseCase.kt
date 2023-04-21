@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetPokemonListUseCase @Inject constructor(
     private val api: PokeApi
-){
+) {
     operator fun invoke(offset: Int = 0): Single<List<PokemonResult>> {
         return api.getPokemonList(offset)
             .flatMap { Single.just(it.pokemonResults) }

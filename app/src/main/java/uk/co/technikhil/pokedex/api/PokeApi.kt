@@ -10,7 +10,10 @@ import uk.co.technikhil.pokedex.data.PokemonListResponse
 interface PokeApi {
 
     @GET("pokemon")
-    fun getPokemonList(@Query("offset") offset: Int, @Query("limit") limit: Int = 100): Single<PokemonListResponse>
+    fun getPokemonList(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int = 100
+    ): Single<PokemonListResponse>
 
     @GET("pokemon/{id}")
     fun getPokemon(@Path("id") id: Int): Single<Pokemon>
