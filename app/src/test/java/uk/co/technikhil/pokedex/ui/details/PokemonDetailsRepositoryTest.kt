@@ -17,17 +17,17 @@ import uk.co.technikhil.pokedex.data.Pokemon
 import uk.co.technikhil.pokedex.util.RxSchedulerExtension
 
 @ExtendWith(RxSchedulerExtension::class)
-class PokemonRepositoryTest {
+class PokemonDetailsRepositoryTest {
 
     private val mockPokemon = Pokemon(1, "test", 0, 1, 1)
     private val mockPokeApi = mock<PokeApi> {
         on { getPokemon(any()) } doReturn Single.just(mockPokemon)
     }
-    lateinit var sut: PokemonRepository
+    lateinit var sut: PokemonDetailsRepository
 
     @BeforeEach
     fun setUp() {
-        sut = PokemonRepository(mockPokeApi)
+        sut = PokemonDetailsRepository(mockPokeApi)
     }
 
     @Test

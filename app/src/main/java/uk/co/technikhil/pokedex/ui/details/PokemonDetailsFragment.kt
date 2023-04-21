@@ -35,6 +35,13 @@ class PokemonDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pokemonId = args.pokemonId
+
+        viewModel.viewState.observe(viewLifecycleOwner, ::onViewStateChanged)
+        viewModel.getPokemonDetails(pokemonId)
+    }
+
+    private fun onViewStateChanged(state: PokemonDetailsNetworkState) {
+
     }
 
     override fun onDestroyView() {
