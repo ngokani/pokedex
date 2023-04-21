@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.technikhil.pokedex.databinding.FragmentHomeBinding
 
@@ -16,6 +16,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var pokemonListAdapter: PokemonListAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,6 +36,16 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        pokemonListAdapter = PokemonListAdapter()
+        binding.pokeList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = pokemonListAdapter
+        }
     }
 
     override fun onDestroyView() {
