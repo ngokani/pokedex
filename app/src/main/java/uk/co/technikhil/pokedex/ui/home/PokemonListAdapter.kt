@@ -1,10 +1,13 @@
 package uk.co.technikhil.pokedex.ui.home
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
 import uk.co.technikhil.pokedex.data.PokemonResult
 import uk.co.technikhil.pokedex.databinding.ViewPokemonItemBinding
 
@@ -54,11 +57,18 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
         holder.pokemonName.text = pokemonList[position].name
+
+        Glide
+            .with(holder.itemView.context)
+            .load(Uri.parse(pokemonList[position].imageUrl))
+            .placeholder(android.R.drawable.stat_sys_download)
+            .into(holder.pokemonImage)
     }
 
     class PokemonListItemViewHolder(private val viewPokemonItemBinding: ViewPokemonItemBinding) :
         ViewHolder(viewPokemonItemBinding.root) {
 
         val pokemonName: TextView = viewPokemonItemBinding.pokemonName
+        val pokemonImage: ImageView = viewPokemonItemBinding.pokemonImage
     }
 }

@@ -5,21 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     app:cardElevation="8dp"
-    android:layout_marginBottom="2dp">
+    android:layout_marginBottom="2dp"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height">
+
+        <ImageView
+            android:id="@+id/pokemon_image"
+            android:layout_width="@dimen/list_item_image_height"
+            android:layout_height="@dimen/list_item_image_height"
+            android:layout_marginEnd="@dimen/small_margin"
+            app:layout_constraintEnd_toStartOf="@id/pokemon_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/pokemon_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/pokemon_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pokemon_image"
+            app:layout_constraintTop_toTopOf="@id/pokemon_image"
             tools:text="Bulbasaur" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

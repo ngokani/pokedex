@@ -16,4 +16,10 @@ data class PokemonResult(
 ) {
     val relativeUrl
         get() = url.replace(NetworkingConstants.BASE_URL, "").trimEnd('/')
+
+    val imageUrl: String
+        get() {
+            val id = url.split("/".toRegex()).dropLast(1).last()
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
+        }
 }
