@@ -19,7 +19,7 @@
         android:name="uk.co.technikhil.pokedex.ui.details.PokemonDetailsFragment"
         android:label="@string/title_pokemon_details"
         tools:layout="@layout/fragment_pokemon_details">
-        <argument android:name="pokemonId"
-            app:argType="integer"/>
+        <argument android:name="pokemonName"
+            app:argType="string"/>
     </fragment>
 </navigation>

@@ -36,12 +36,13 @@ class PokemonDetailsFragment : Fragment() {
     ): View {
 
         _binding = FragmentPokemonDetailsBinding.inflate(inflater, container, false)
+        requireActivity().title = getString(R.string.title_pokemon_details, args.pokemonName.capitalize())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pokemonId = args.pokemonId
+        val pokemonId = args.pokemonName
 
         movesAdapter = MovesAdapter()
         binding.pokemonMoves.apply {

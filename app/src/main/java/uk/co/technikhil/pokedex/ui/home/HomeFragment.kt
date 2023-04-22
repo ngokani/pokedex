@@ -46,8 +46,8 @@ class HomeFragment : Fragment() {
         viewModel.onViewCreated()
     }
 
-    private fun onItemClicked(pokemonId: Int) {
-        findNavController().navigate(HomeFragmentDirections.actionNavigateToDetails(pokemonId))
+    private fun onItemClicked(pokemonName: String) {
+        findNavController().navigate(HomeFragmentDirections.actionNavigateToDetails(pokemonName))
     }
 
     private fun onViewStateChanged(state: PokemonListNetworkState) {
