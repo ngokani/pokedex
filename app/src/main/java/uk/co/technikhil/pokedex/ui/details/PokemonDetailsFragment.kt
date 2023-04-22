@@ -57,7 +57,7 @@ class PokemonDetailsFragment : Fragment() {
 
         if (state is PokemonDetailsNetworkState.Success) {
             binding.apply {
-                pokemonName.text = getString(R.string.pokemon_name, state.pokemonResult.name)
+                pokemonName.text = getString(R.string.pokemon_name, state.pokemonResult.name.capitalize())
                 pokemonHeight.text = getString(R.string.pokemon_height, state.pokemonResult.dmHeight.toString())
                 pokemonWeight.text = getString(R.string.pokemon_weight, state.pokemonResult.hgWeight.toString())
 
