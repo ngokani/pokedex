@@ -40,7 +40,7 @@ class PokemonDetailsViewModelTest {
 
             sut.viewState.observeForever(observer)
 
-            sut.getPokemonDetails(1)
+            sut.getPokemonDetails("test")
 
             verify(observer, times(1)).onChanged(eq(PokemonDetailsNetworkState.Success(mockPokemon)))
 
@@ -58,7 +58,7 @@ class PokemonDetailsViewModelTest {
 
             sut.viewState.observeForever(observer)
 
-            sut.getPokemonDetails(1)
+            sut.getPokemonDetails("test")
 
             verify(observer).onChanged(eq(PokemonDetailsNetworkState.Failed))
 
@@ -75,7 +75,7 @@ class PokemonDetailsViewModelTest {
 
             sut.viewState.observeForever(observer)
 
-            sut.getPokemonDetails(1)
+            sut.getPokemonDetails("test")
 
             verify(observer).onChanged(eq(PokemonDetailsNetworkState.Loading))
 

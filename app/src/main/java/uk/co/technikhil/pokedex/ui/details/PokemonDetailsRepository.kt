@@ -12,16 +12,18 @@ class PokemonDetailsRepository @Inject constructor(
     private val api: PokeApi
 ){
 
-    private val cacheList = mutableMapOf<Int, Pokemon>()
+    private val cacheList = mutableMapOf<String, Pokemon>()
 
-    fun getPokemon(pokemonId: Int): Single<Pokemon> {
+    fun getPokemon(name: String): Single<Pokemon> {
 
-        return if (!cacheList.contains(pokemonId)) {
-            api.getPokemon(pokemonId)
+        val pokemonName = name.lowercase()
+
+        return if (!cacheList.contains(pokemonName)) {
+            api.getPokemon(pokemonName)
                 .subscribeOn(Schedulers.io())
-                .doOnSuccess { cacheList[pokemonId] = it }
+                .doOnSuccess { cacheList[pokemonName] = it }
         } else {
-            Single.just(cacheList[pokemonId]!!)
+            Single.just(cacheList[pokemonName]!!)
         }
     }
 

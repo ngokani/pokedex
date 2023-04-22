@@ -12,6 +12,6 @@ interface PokeApi {
     @GET("pokemon?limit=151")
     fun getPokemonList(@Query("offset") offset: Int): Single<PokemonListResponse>
 
-    @GET("pokemon/{id}")
-    fun getPokemon(@Path("id") id: Int): Single<Pokemon>
+    @GET("pokemon/{name}")
+    fun getPokemon(@Path("name") name: String): Single<Pokemon>
 }

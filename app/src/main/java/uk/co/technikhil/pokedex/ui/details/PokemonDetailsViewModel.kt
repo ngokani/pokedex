@@ -18,9 +18,9 @@ class PokemonDetailsViewModel @Inject constructor(
     private val _state = MutableLiveData<PokemonDetailsNetworkState>()
     val viewState: LiveData<PokemonDetailsNetworkState> = _state
 
-    fun getPokemonDetails(id: Int) {
+    fun getPokemonDetails(pokemonName: String) {
         disposables.add(
-            pokemonDetailsRepository.getPokemon(id)
+            pokemonDetailsRepository.getPokemon(pokemonName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _state.value = PokemonDetailsNetworkState.Loading }
                 .subscribe({ result ->

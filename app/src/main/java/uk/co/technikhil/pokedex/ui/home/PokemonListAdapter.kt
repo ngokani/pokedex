@@ -1,6 +1,5 @@
 package uk.co.technikhil.pokedex.ui.home
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -15,7 +14,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
 
     private var pokemonList = mutableListOf<PokemonResult>()
 
-    var onItemClickedHandler: ((Int) -> Unit)? = null
+    var onItemClickedHandler: ((String) -> Unit)? = null
 
     fun setPokemonResults(results: List<PokemonResult>) {
 
@@ -58,7 +57,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
     }
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
-        holder.pokemonName.text = pokemonList[position].name
+        holder.pokemonName.text = pokemonList[position].name.capitalize()
 
         Glide
             .with(holder.itemView.context)
@@ -67,7 +66,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
             .into(holder.pokemonImage)
 
         holder.itemView.setOnClickListener {
-            onItemClickedHandler?.invoke(pokemonList[position].id)
+            onItemClickedHandler?.invoke(pokemonList[position].name)
         }
     }
 
