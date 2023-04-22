@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.technikhil.pokedex.R
-import uk.co.technikhil.pokedex.data.Move
-import uk.co.technikhil.pokedex.data.PokemonMove
 import uk.co.technikhil.pokedex.databinding.FragmentPokemonDetailsBinding
 import uk.co.technikhil.pokedex.ui.moves.MovesAdapter
 
@@ -36,13 +34,6 @@ class PokemonDetailsFragment : Fragment() {
     ): View {
 
         _binding = FragmentPokemonDetailsBinding.inflate(inflater, container, false)
-        requireActivity().title = getString(R.string.title_pokemon_details, args.pokemonName.capitalize())
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val pokemonId = args.pokemonName
 
         movesAdapter = MovesAdapter()
         binding.pokemonMoves.apply {
@@ -50,8 +41,14 @@ class PokemonDetailsFragment : Fragment() {
             adapter = movesAdapter
         }
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel.viewState.observe(viewLifecycleOwner, ::onViewStateChanged)
-        viewModel.getPokemonDetails(pokemonId)
+        viewModel.getPokemonDetails(args.pokemonName)
     }
 
     private fun onViewStateChanged(state: PokemonDetailsNetworkState) {

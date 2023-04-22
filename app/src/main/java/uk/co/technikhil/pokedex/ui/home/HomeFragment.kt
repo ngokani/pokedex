@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun onItemClicked(pokemonName: String) {
-        findNavController().navigate(HomeFragmentDirections.actionNavigateToDetails(pokemonName))
+        findNavController().navigate(HomeFragmentDirections.actionNavigateToDetails(pokemonName.capitalize()))
     }
 
     private fun onViewStateChanged(state: PokemonListNetworkState) {
