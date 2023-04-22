@@ -26,7 +26,7 @@ class MovesAdapter : RecyclerView.Adapter<MovesAdapter.MoveItemViewHolder>() {
 
     override fun onBindViewHolder(holder: MoveItemViewHolder, position: Int) {
         val pokemonMove = pokemonMovesList[position]
-        holder.textView.text = pokemonMove.move.name.capitalize()
+        holder.textView.text = pokemonMove.move.name.replace("-", " ").capitalize()
         holder.textView.setOnClickListener {
             onItemClickedHandler?.invoke(pokemonMove.move)
         }
