@@ -8,4 +8,5 @@
     <string name="pokemon_name">Name: %s</string>
     <string name="pokemon_height">Height: %sdm</string>
     <string name="pokemon_weight">Weight: %sHG</string>
+    <string name="moves_title">Moves</string>
 </resources>

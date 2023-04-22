@@ -4,41 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.details.PokemonDetailsFragment"
-    android:padding="20dp">
+    android:padding="20dp"
+    tools:context=".ui.details.PokemonDetailsFragment">
 
     <ImageView
         android:id="@+id/pokemon_image"
         android:layout_width="@dimen/large_image_size"
         android:layout_height="@dimen/large_image_size"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pokemon_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/description_text_size"
-        app:layout_constraintStart_toStartOf="@id/pokemon_image"
         app:layout_constraintEnd_toEndOf="@id/pokemon_image"
-        app:layout_constraintTop_toBottomOf="@id/pokemon_image"/>
+        app:layout_constraintStart_toStartOf="@id/pokemon_image"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_image" />
 
     <TextView
         android:id="@+id/pokemon_height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/description_text_size"
-        app:layout_constraintStart_toStartOf="@id/pokemon_image"
         app:layout_constraintEnd_toEndOf="@id/pokemon_image"
-        app:layout_constraintTop_toBottomOf="@id/pokemon_name"/>
+        app:layout_constraintStart_toStartOf="@id/pokemon_image"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_name" />
 
     <TextView
         android:id="@+id/pokemon_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/description_text_size"
-        app:layout_constraintStart_toStartOf="@id/pokemon_image"
         app:layout_constraintEnd_toEndOf="@id/pokemon_image"
-        app:layout_constraintTop_toBottomOf="@id/pokemon_height"/>
+        app:layout_constraintStart_toStartOf="@id/pokemon_image"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_height" />
+
+    <TextView
+        android:id="@+id/pokemon_moves_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/moves_title"
+        android:textFontWeight="130"
+        app:layout_constraintBottom_toTopOf="@id/pokemon_moves"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_weight" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pokemon_moves"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_moves_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

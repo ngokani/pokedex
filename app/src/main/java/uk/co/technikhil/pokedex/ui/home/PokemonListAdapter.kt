@@ -58,7 +58,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.PokemonListIt
     }
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
-        holder.pokemonName.text = pokemonList[position].name
+        holder.pokemonName.text = pokemonList[position].name.capitalize()
 
         Glide
             .with(holder.itemView.context)
