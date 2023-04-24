@@ -1,6 +1,9 @@
 package uk.co.technikhil.pokedex.ui.home
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -13,11 +16,14 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import retrofit2.HttpException
+import retrofit2.Response
 import uk.co.technikhil.pokedex.api.PokeApi
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import uk.co.technikhil.pokedex.data.PokemonResult
 import uk.co.technikhil.pokedex.util.MainDispatcherExtension
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MainDispatcherExtension::class)
 class HomeRepositoryTest {
 
@@ -39,7 +45,7 @@ class HomeRepositoryTest {
 
     @Test
     fun `GIVEN the API returns successfully WHEN I get Pokemon list THEN a list of pokemon are return`(): Unit =
-        runBlocking {
+        runTest {
 
             val actual = sut.getPokemonList(0)
 
@@ -49,9 +55,15 @@ class HomeRepositoryTest {
 
     @Test
     fun `GIVEN the API returns an error WHEN I get Pokemon list THEN the error is returned`(): Unit =
-        runBlocking {
+        runTest {
 
-            whenever(mockPokeApi.getPokemonList(0)).thenThrow(Throwable())
+            val exception = HttpException(
+                Response.error<PokemonListResponse>(
+                    500,
+                    ResponseBody.create(MediaType.get("application/json"), "")
+                )
+            )
+            whenever(mockPokeApi.getPokemonList(0)).thenThrow(exception)
 
             val result = kotlin.runCatching {
                 sut.getPokemonList(0)
@@ -63,7 +75,7 @@ class HomeRepositoryTest {
 
     @Test
     fun `WHEN I get the same page twice THEN only one call is made to the API`(): Unit =
-        runBlocking {
+        runTest {
 
             sut.getPokemonList(0)
             sut.getPokemonList(0)
@@ -73,7 +85,8 @@ class HomeRepositoryTest {
 
     @Test
     fun `GIVEN I have two pages WHEN I get the Pokemon list for each THEN two calls are made to the API`(): Unit =
-        runBlocking {
+        runTest {
+
             sut.getPokemonList(0)
             sut.getPokemonList(1)
 

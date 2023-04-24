@@ -1,7 +1,9 @@
 package uk.co.technikhil.pokedex.ui.home
 
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -12,6 +14,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import retrofit2.HttpException
+import retrofit2.Response
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import uk.co.technikhil.pokedex.data.PokemonResult
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
@@ -55,16 +59,22 @@ class HomeViewModelTest {
             )
 
 
-
         } finally {
             sut.viewState.removeObserver(observer)
         }
     }
 
     @Test
-    fun `GIVEN the page has loaded WHEN the network call fails THEN it is emitted`() = runBlocking {
+    fun `GIVEN the page has loaded WHEN the network call fails THEN it is emitted`() = runTest {
 
-        whenever(mockHomeRepository.getPokemonList(any())).thenThrow(Throwable())
+        val exception = HttpException(
+            Response.error<PokemonListResponse>(
+                500, ResponseBody.create(
+                    MediaType.get("application/json"), ""
+                )
+            )
+        )
+        whenever(mockHomeRepository.getPokemonList(any())).thenThrow(exception)
         val observer: Observer<PokemonListNetworkState> = mock()
         try {
 

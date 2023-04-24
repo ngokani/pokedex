@@ -1,7 +1,10 @@
 package uk.co.technikhil.pokedex.ui.details
 
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,10 +16,13 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import retrofit2.HttpException
+import retrofit2.Response
 import uk.co.technikhil.pokedex.data.Pokemon
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
 import uk.co.technikhil.pokedex.util.MainDispatcherExtension
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MainDispatcherExtension::class, InstantExecutorExtension::class)
 class PokemonDetailsViewModelTest {
 
@@ -54,9 +60,15 @@ class PokemonDetailsViewModelTest {
     }
 
     @Test
-    fun `WHEN the network call fails THEN it is emitted`() = runBlocking {
+    fun `WHEN the network call fails THEN it is emitted`() = runTest {
 
-        whenever(pokemonDetailsRepository.getPokemon(any())).thenThrow(Exception())
+        val exception = HttpException(
+            Response.error<Pokemon>(
+                500,
+                ResponseBody.create(MediaType.get("application/json"), "")
+            )
+        )
+        whenever(pokemonDetailsRepository.getPokemon(any())).thenThrow(exception)
         val observer: Observer<PokemonDetailsNetworkState> = mock()
         try {
 
