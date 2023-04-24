@@ -1,7 +1,5 @@
 package uk.co.technikhil.pokedex.ui.home
 
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import uk.co.technikhil.pokedex.api.PokeApi
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import javax.inject.Inject
@@ -23,9 +21,5 @@ class HomeRepository @Inject constructor(
         } else {
             cacheList[offset]!!
         }
-    }
-
-    fun clear() {
-        cacheList.clear()
     }
 }

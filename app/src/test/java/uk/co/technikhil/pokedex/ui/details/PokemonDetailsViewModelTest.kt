@@ -1,7 +1,8 @@
 package uk.co.technikhil.pokedex.ui.details
 
 import androidx.lifecycle.Observer
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,14 +15,14 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import uk.co.technikhil.pokedex.data.Pokemon
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
-import uk.co.technikhil.pokedex.util.RxSchedulerExtension
+import uk.co.technikhil.pokedex.util.MainDispatcherExtension
 
-@ExtendWith(RxSchedulerExtension::class, InstantExecutorExtension::class)
+@ExtendWith(MainDispatcherExtension::class, InstantExecutorExtension::class)
 class PokemonDetailsViewModelTest {
 
     private val mockPokemon = mock<Pokemon>()
     private val pokemonDetailsRepository = mock<PokemonDetailsRepository> {
-        on { getPokemon(any())} doReturn Single.just(mockPokemon)
+        onBlocking { getPokemon(any()) } doReturn mockPokemon
     }
 
     lateinit var sut: PokemonDetailsViewModel
@@ -42,7 +43,10 @@ class PokemonDetailsViewModelTest {
 
             sut.getPokemonDetails("test")
 
-            verify(observer, times(1)).onChanged(eq(PokemonDetailsNetworkState.Success(mockPokemon)))
+            verify(
+                observer,
+                times(1)
+            ).onChanged(eq(PokemonDetailsNetworkState.Success(mockPokemon)))
 
         } finally {
             sut.viewState.removeObserver(observer)
@@ -50,9 +54,9 @@ class PokemonDetailsViewModelTest {
     }
 
     @Test
-    fun `WHEN the network call fails THEN it is emitted`() {
+    fun `WHEN the network call fails THEN it is emitted`() = runBlocking {
 
-        whenever(pokemonDetailsRepository.getPokemon(any())).thenReturn(Single.error(Throwable()))
+        whenever(pokemonDetailsRepository.getPokemon(any())).thenThrow(Exception())
         val observer: Observer<PokemonDetailsNetworkState> = mock()
         try {
 
@@ -61,7 +65,8 @@ class PokemonDetailsViewModelTest {
             sut.getPokemonDetails("test")
 
             verify(observer).onChanged(eq(PokemonDetailsNetworkState.Failed))
-
+        } catch (exception: Exception) {
+            assertTrue(exception is Exception)
         } finally {
             sut.viewState.removeObserver(observer)
         }

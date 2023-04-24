@@ -24,8 +24,4 @@ class PokemonDetailsRepository @Inject constructor(
             cacheList[pokemonName]!!
         }
     }
-
-    fun clear() {
-        cacheList.clear()
-    }
 }

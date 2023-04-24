@@ -1,7 +1,7 @@
 package uk.co.technikhil.pokedex.ui.home
 
 import androidx.lifecycle.Observer
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,9 +15,9 @@ import org.mockito.kotlin.whenever
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import uk.co.technikhil.pokedex.data.PokemonResult
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
-import uk.co.technikhil.pokedex.util.RxSchedulerExtension
+import uk.co.technikhil.pokedex.util.MainDispatcherExtension
 
-@ExtendWith(RxSchedulerExtension::class, InstantExecutorExtension::class)
+@ExtendWith(MainDispatcherExtension::class, InstantExecutorExtension::class)
 class HomeViewModelTest {
 
     private val mockPokemonResult = PokemonResult("test name", "https://pokeapi.co/api/v2/test")
@@ -25,10 +25,10 @@ class HomeViewModelTest {
     private val mockPokemonListResponse = PokemonListResponse(1, null, null, mockPokemonResults)
 
     private val mockHomeRepository = mock<HomeRepository> {
-        on { getPokemonList(any()) } doReturn Single.just(mockPokemonListResponse)
+        onBlocking { getPokemonList(any()) } doReturn mockPokemonListResponse
     }
 
-    lateinit var sut: HomeViewModel
+    private lateinit var sut: HomeViewModel
 
     @BeforeEach
     fun setUp() {
@@ -46,7 +46,15 @@ class HomeViewModelTest {
 
             sut.onViewCreated()
 
-            verify(observer, times(1)).onChanged(eq(PokemonListNetworkState.Success(mockPokemonResults)))
+            verify(observer, times(1)).onChanged(
+                eq(
+                    PokemonListNetworkState.Success(
+                        mockPokemonResults
+                    )
+                )
+            )
+
+
 
         } finally {
             sut.viewState.removeObserver(observer)
@@ -54,9 +62,9 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `GIVEN the page has loaded WHEN the network call fails THEN it is emitted`() {
+    fun `GIVEN the page has loaded WHEN the network call fails THEN it is emitted`() = runBlocking {
 
-        whenever(mockHomeRepository.getPokemonList(any())).thenReturn(Single.error(Throwable()))
+        whenever(mockHomeRepository.getPokemonList(any())).thenThrow(Throwable())
         val observer: Observer<PokemonListNetworkState> = mock()
         try {
 
