@@ -62,11 +62,13 @@ class PokemonDetailsViewModelTest {
 
             sut.viewState.observeForever(observer)
 
-            sut.getPokemonDetails("test")
+            val result = kotlin.runCatching {
+                sut.getPokemonDetails("test")
+            }
 
+            assertTrue(result.isFailure)
             verify(observer).onChanged(eq(PokemonDetailsNetworkState.Failed))
-        } catch (exception: Exception) {
-            assertTrue(exception is Exception)
+
         } finally {
             sut.viewState.removeObserver(observer)
         }
