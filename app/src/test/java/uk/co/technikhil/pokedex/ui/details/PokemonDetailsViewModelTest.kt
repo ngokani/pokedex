@@ -1,7 +1,11 @@
 package uk.co.technikhil.pokedex.ui.details
 
 import androidx.lifecycle.Observer
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -12,16 +16,19 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import retrofit2.HttpException
+import retrofit2.Response
 import uk.co.technikhil.pokedex.data.Pokemon
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
-import uk.co.technikhil.pokedex.util.RxSchedulerExtension
+import uk.co.technikhil.pokedex.util.MainDispatcherExtension
 
-@ExtendWith(RxSchedulerExtension::class, InstantExecutorExtension::class)
+@OptIn(ExperimentalCoroutinesApi::class)
+@ExtendWith(MainDispatcherExtension::class, InstantExecutorExtension::class)
 class PokemonDetailsViewModelTest {
 
     private val mockPokemon = mock<Pokemon>()
     private val pokemonDetailsRepository = mock<PokemonDetailsRepository> {
-        on { getPokemon(any())} doReturn Single.just(mockPokemon)
+        onBlocking { getPokemon(any()) } doReturn mockPokemon
     }
 
     lateinit var sut: PokemonDetailsViewModel
@@ -42,7 +49,10 @@ class PokemonDetailsViewModelTest {
 
             sut.getPokemonDetails("test")
 
-            verify(observer, times(1)).onChanged(eq(PokemonDetailsNetworkState.Success(mockPokemon)))
+            verify(
+                observer,
+                times(1)
+            ).onChanged(eq(PokemonDetailsNetworkState.Success(mockPokemon)))
 
         } finally {
             sut.viewState.removeObserver(observer)
@@ -50,16 +60,25 @@ class PokemonDetailsViewModelTest {
     }
 
     @Test
-    fun `WHEN the network call fails THEN it is emitted`() {
+    fun `WHEN the network call fails THEN it is emitted`() = runTest {
 
-        whenever(pokemonDetailsRepository.getPokemon(any())).thenReturn(Single.error(Throwable()))
+        val exception = HttpException(
+            Response.error<Pokemon>(
+                500,
+                ResponseBody.create(MediaType.get("application/json"), "")
+            )
+        )
+        whenever(pokemonDetailsRepository.getPokemon(any())).thenThrow(exception)
         val observer: Observer<PokemonDetailsNetworkState> = mock()
         try {
 
             sut.viewState.observeForever(observer)
 
-            sut.getPokemonDetails("test")
+            val result = kotlin.runCatching {
+                sut.getPokemonDetails("test")
+            }
 
+            assertTrue(result.isFailure)
             verify(observer).onChanged(eq(PokemonDetailsNetworkState.Failed))
 
         } finally {

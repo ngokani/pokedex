@@ -1,7 +1,5 @@
 package uk.co.technikhil.pokedex.ui.home
 
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import uk.co.technikhil.pokedex.api.PokeApi
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import javax.inject.Inject
@@ -14,18 +12,14 @@ class HomeRepository @Inject constructor(
 
     private val cacheList = mutableMapOf<Int, PokemonListResponse>()
 
-    fun getPokemonList(offset: Int = 0): Single<PokemonListResponse> {
+    suspend fun getPokemonList(offset: Int = 0): PokemonListResponse {
 
         return if (!cacheList.contains(offset)) {
-            api.getPokemonList(offset)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess { cacheList[offset] = it }
+            api.getPokemonList(offset).also {
+                cacheList[offset] = it
+            }
         } else {
-            Single.just(cacheList[offset]!!)
+            cacheList[offset]!!
         }
-    }
-
-    fun clear() {
-        cacheList.clear()
     }
 }
