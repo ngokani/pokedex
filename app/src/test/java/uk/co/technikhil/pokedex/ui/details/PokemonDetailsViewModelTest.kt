@@ -39,7 +39,7 @@ class PokemonDetailsViewModelTest {
     @Test
     fun `WHEN the network call is a success THEN it is emitted with results`() {
 
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonDetailsNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
@@ -62,7 +62,7 @@ class PokemonDetailsViewModelTest {
             )
         )
         whenever(pokemonDetailsRepository.getPokemon(any())).thenThrow(exception)
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonDetailsNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
@@ -79,7 +79,7 @@ class PokemonDetailsViewModelTest {
     @Test
     fun `WHEN the network call is ongoing THEN it is emitted`() {
 
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonDetailsNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)

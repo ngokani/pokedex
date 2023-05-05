@@ -43,7 +43,7 @@ class HomeViewModelTest {
     @Test
     fun `GIVEN the page has loaded WHEN the network call is a success THEN it is emitted with results`() = runTest {
 
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
@@ -68,7 +68,7 @@ class HomeViewModelTest {
             )
         )
         whenever(mockHomeRepository.getPokemonList(any())).thenThrow(exception)
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
@@ -85,7 +85,7 @@ class HomeViewModelTest {
     @Test
     fun `GIVEN the page has loaded WHEN the network call is ongoing THEN it is emitted`() {
 
-        val observer = TestObserver(sut.viewState)
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)

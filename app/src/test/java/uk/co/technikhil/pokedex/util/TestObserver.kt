@@ -1,9 +1,8 @@
 package uk.co.technikhil.pokedex.util
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-class TestObserver<T>(private val observed: LiveData<T>) : Observer<T> {
+class TestObserver<T> : Observer<T> {
 
     private val _valueHistory = mutableListOf<T>()
     val valueHistory: List<T>
