@@ -1,21 +1,19 @@
 package uk.co.technikhil.pokedex.ui.home
 
-import androidx.lifecycle.Observer
 import io.reactivex.rxjava3.core.Single
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import uk.co.technikhil.pokedex.data.PokemonListResponse
 import uk.co.technikhil.pokedex.data.PokemonResult
 import uk.co.technikhil.pokedex.util.InstantExecutorExtension
 import uk.co.technikhil.pokedex.util.RxSchedulerExtension
+import uk.co.technikhil.pokedex.util.TestObserver
 
 @ExtendWith(RxSchedulerExtension::class, InstantExecutorExtension::class)
 class HomeViewModelTest {
@@ -39,14 +37,14 @@ class HomeViewModelTest {
     @Test
     fun `GIVEN the page has loaded WHEN the network call is a success THEN it is emitted with results`() {
 
-        val observer: Observer<PokemonListNetworkState> = mock()
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
 
             sut.onViewCreated()
 
-            verify(observer, times(1)).onChanged(eq(PokemonListNetworkState.Success(mockPokemonResults)))
+            assertTrue(observer.wasEmitted(PokemonListNetworkState.Success(mockPokemonResults)))
 
         } finally {
             sut.viewState.removeObserver(observer)
@@ -57,14 +55,15 @@ class HomeViewModelTest {
     fun `GIVEN the page has loaded WHEN the network call fails THEN it is emitted`() {
 
         whenever(mockHomeRepository.getPokemonList(any())).thenReturn(Single.error(Throwable()))
-        val observer: Observer<PokemonListNetworkState> = mock()
+
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
 
             sut.onViewCreated()
 
-            verify(observer).onChanged(eq(PokemonListNetworkState.Failed))
+            assertTrue(observer.wasEmitted(PokemonListNetworkState.Failed))
 
         } finally {
             sut.viewState.removeObserver(observer)
@@ -74,14 +73,14 @@ class HomeViewModelTest {
     @Test
     fun `GIVEN the page has loaded WHEN the network call is ongoing THEN it is emitted`() {
 
-        val observer: Observer<PokemonListNetworkState> = mock()
+        val observer = TestObserver<PokemonListNetworkState>()
         try {
 
             sut.viewState.observeForever(observer)
 
             sut.onViewCreated()
 
-            verify(observer).onChanged(eq(PokemonListNetworkState.Loading))
+            assertTrue(observer.wasEmitted(PokemonListNetworkState.Loading))
 
         } finally {
             sut.viewState.removeObserver(observer)
